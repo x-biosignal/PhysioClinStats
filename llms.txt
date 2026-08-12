@@ -1,0 +1,161 @@
+# PhysioClinStats
+
+Clinical inference engine for the
+[x-biosignal](https://github.com/x-biosignal) ecosystem:
+mixed-effects/MMRM longitudinal models, single-case (N-of-1) designs,
+estimands with multiple imputation, causal mediation, declared
+target-trial emulation, and per-estimate uncertainty. Heavy modelling
+backends are optional (guarded) Suggests.
+
+## Installation
+
+``` r
+
+install.packages("PhysioClinStats",
+  repos = c("https://x-biosignal.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+## Causal mediation
+
+``` r
+
+if (requireNamespace("mediation", quietly = TRUE)) {
+  data(jobs, package = "mediation")
+  model_m <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)
+  model_y <- lm(
+    depress2 ~ treat + job_seek + econ_hard + sex + age,
+    data = jobs
+  )
+  result <- causalMediation(
+    model_m, model_y,
+    treat = "treat", mediator = "job_seek",
+    sims = 1000, seed = 481
+  )
+  PhysioCore::resultValue(result)$effects
+}
+```
+
+The estimates require sequential ignorability, consistency, positivity,
+no treatment-induced mediator-outcome confounder, and correctly
+specified models. An indirect effect is not proof of a biological
+mechanism.
+
+## Target-trial emulation
+
+``` r
+
+protocol <- targetTrialProtocol(
+  eligibility = function(data) data$eligible,
+  treatment_strategies = list(never = 0, always = 1),
+  assignment = "clone eligible participants",
+  time_zero = 0,
+  follow_up = 12,
+  outcome = "recovery by week 12",
+  causal_contrast = "always versus never",
+  analysis_plan = "clone-censor-weight"
+)
+
+result <- targetTrialEmulate(
+  longitudinal_data, protocol,
+  id = "participant", time = "week", treatment = "treated",
+  outcome = "recovered",
+  baseline_covariates = c("age", "baseline_score"),
+  time_varying_covariates = "current_score",
+  estimand = "per_protocol"
+)
+PhysioCore::resultValue(result)$effects
+```
+
+Time zero and every protocol component are declared rather than
+inferred. Inspect positivity, balance, censoring, and
+raw-versus-analysis weight diagnostics before interpreting a contrast.
+Cox hazard ratios are non-collapsible and are not marginal risk ratios.
+
+## Governance & support
+
+Part of the [Physio ecosystem](https://x-biosignal.r-universe.dev).
+Community and policy documents live in the umbrella repository:
+
+- [Code of
+  Conduct](https://github.com/x-biosignal/PhysioExperiment/blob/main/CODE_OF_CONDUCT.md)
+- [Contributing](https://github.com/x-biosignal/PhysioExperiment/blob/main/CONTRIBUTING.md)
+- [Governance](https://github.com/x-biosignal/PhysioExperiment/blob/main/GOVERNANCE.md)
+- [Support](https://github.com/x-biosignal/PhysioExperiment/blob/main/SUPPORT.md)
+- [Security
+  policy](https://github.com/x-biosignal/PhysioExperiment/blob/main/SECURITY.md)
+- [Deprecation & lifecycle
+  policy](https://github.com/x-biosignal/PhysioExperiment/blob/main/DEPRECATION.md)
+
+# Package index
+
+## All functions
+
+- [`ESTIMAND_STRATEGIES`](https://x-biosignal.github.io/PhysioClinStats/reference/ESTIMAND_STRATEGIES.md)
+  : Valid ICH E9(R1) intercurrent-event strategies
+- [`analyseEstimand()`](https://x-biosignal.github.io/PhysioClinStats/reference/analyseEstimand.md)
+  : Analyse an estimand under multiple imputation for dropout
+- [`bayesEstimate()`](https://x-biosignal.github.io/PhysioClinStats/reference/bayesEstimate.md)
+  : Bayesian estimate of a mean (conjugate Normal-Normal or Stan)
+- [`causalMediation()`](https://x-biosignal.github.io/PhysioClinStats/reference/causalMediation.md)
+  : Model-based causal mediation analysis
+- [`clinStatsBackends()`](https://x-biosignal.github.io/PhysioClinStats/reference/clinStatsBackends.md)
+  : Which optional modelling backends are available
+- [`conformalInterval()`](https://x-biosignal.github.io/PhysioClinStats/reference/conformalInterval.md)
+  : Conformal prediction interval for a fitted model
+- [`conformalPredict()`](https://x-biosignal.github.io/PhysioClinStats/reference/conformalPredict.md)
+  : Conformal prediction band for a single new patient
+- [`coxModel()`](https://x-biosignal.github.io/PhysioClinStats/reference/coxModel.md)
+  : Cox proportional-hazards model with a PH check
+- [`credibleInterval()`](https://x-biosignal.github.io/PhysioClinStats/reference/credibleInterval.md)
+  : Credible interval from posterior samples
+- [`defineEstimand()`](https://x-biosignal.github.io/PhysioClinStats/reference/defineEstimand.md)
+  : Define an ICH E9(R1) estimand
+- [`estimatedMarginalMeans()`](https://x-biosignal.github.io/PhysioClinStats/reference/estimatedMarginalMeans.md)
+  : Estimated marginal means
+- [`fitMMRM()`](https://x-biosignal.github.io/PhysioClinStats/reference/fitMMRM.md)
+  : Fit a mixed model for repeated measures (MMRM)
+- [`fitMixedModel()`](https://x-biosignal.github.io/PhysioClinStats/reference/fitMixedModel.md)
+  : Fit a linear mixed-effects model
+- [`latentClassGrowth()`](https://x-biosignal.github.io/PhysioClinStats/reference/latentClassGrowth.md)
+  : Latent-class growth analysis of longitudinal trajectories
+- [`milestoneHazard()`](https://x-biosignal.github.io/PhysioClinStats/reference/milestoneHazard.md)
+  : Hazard ratio for attaining a milestone
+- [`multipleImputation()`](https://x-biosignal.github.io/PhysioClinStats/reference/multipleImputation.md)
+  : Multiply impute missing data
+- [`pairwiseContrasts()`](https://x-biosignal.github.io/PhysioClinStats/reference/pairwiseContrasts.md)
+  : Pairwise contrasts of estimated marginal means
+- [`peToLong()`](https://x-biosignal.github.io/PhysioClinStats/reference/peToLong.md)
+  : Reshape a longitudinal PhysioExperiment to long format
+- [`poolEstimates()`](https://x-biosignal.github.io/PhysioClinStats/reference/poolEstimates.md)
+  : Pool estimates across imputations (Rubin's rules)
+- [`proportionalRecoveryRule()`](https://x-biosignal.github.io/PhysioClinStats/reference/proportionalRecoveryRule.md)
+  : Evaluate the proportional recovery rule with an artefact guard
+- [`recoveryTrajectoryLME()`](https://x-biosignal.github.io/PhysioClinStats/reference/recoveryTrajectoryLME.md)
+  : Fit a population recovery-trajectory NLME
+- [`requireBackend()`](https://x-biosignal.github.io/PhysioClinStats/reference/requireBackend.md)
+  : Require an optional backend or stop with guidance
+- [`scedABAB()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedABAB.md)
+  : Analyse an ABAB (reversal) single-case design
+- [`scedCelerationLine()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedCelerationLine.md)
+  : Celeration (trend) line for a single-case phase
+- [`scedNAP()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedNAP.md)
+  : Non-overlap of all pairs (NAP)
+- [`scedPEM()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedPEM.md)
+  : Percentage exceeding the median (PEM)
+- [`scedPND()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedPND.md)
+  : Percentage of non-overlapping data (PND)
+- [`scedTau()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedTau.md)
+  : Tau non-overlap (Tau)
+- [`scedTauU()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedTauU.md)
+  : Tau-U with baseline-trend correction
+- [`scedTwoSDBand()`](https://x-biosignal.github.io/PhysioClinStats/reference/scedTwoSDBand.md)
+  : Two-standard-deviation band decision rule
+- [`survivalFit()`](https://x-biosignal.github.io/PhysioClinStats/reference/survivalFit.md)
+  : Kaplan-Meier survival fit with attainment-time summary
+- [`targetTrialEmulate()`](https://x-biosignal.github.io/PhysioClinStats/reference/targetTrialEmulate.md)
+  : Emulate a declared target trial
+- [`targetTrialProtocol()`](https://x-biosignal.github.io/PhysioClinStats/reference/targetTrialProtocol.md)
+  : Declare a target-trial protocol
+- [`timeToMilestone()`](https://x-biosignal.github.io/PhysioClinStats/reference/timeToMilestone.md)
+  : Derive a time-to-milestone survival endpoint
+
