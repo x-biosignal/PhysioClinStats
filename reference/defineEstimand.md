@@ -3,7 +3,7 @@
 Constructs a validated estimand from its five ICH E9(R1) attributes. The
 returned object is a fully-named list (class `"estimand"`) that
 round-trips through the `estimand` slot of an
-[`AnalysisResult`](https://x-biosignal.r-universe.dev/PhysioCore/reference/AnalysisResult.html).
+[`AnalysisResult`](https://x-biosignal.github.io/PhysioCore//reference/AnalysisResult.html).
 
 ## Usage
 

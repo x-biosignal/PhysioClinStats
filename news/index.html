@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PhysioClinStats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,11 @@
       <small>Source: <a href="https://github.com/x-biosignal/PhysioExperiment/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="physioclinstats-030">PhysioClinStats 0.3.0<a class="anchor" aria-label="anchor" href="#physioclinstats-030"></a></h2>
+<ul><li>
+<code><a href="../reference/doseResponse.html">doseResponse()</a></code>: therapy dose-response model relating a continuous/ordinal dose (hours/repetitions/sessions) to an outcome or change-from-baseline, with confounder adjustment, optional subject random intercepts (via <code><a href="../reference/fitMixedModel.html">fitMixedModel()</a></code>), and linear / log / natural-spline / Emax dose forms. Returns an <code>AnalysisResult</code> with the dose effect, a predicted dose-response curve and the coefficient table. Honest scope: every coefficient is estimated from the data (no hard-coded slope), associational unless dose was randomised.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="physioclinstats-021">PhysioClinStats 0.2.1<a class="anchor" aria-label="anchor" href="#physioclinstats-021"></a></h2>
 <ul><li>Relaxed the two LAPACK-derived medsens sensitivity-curve comparisons (acme_control/d0, ade_control/z0) in the pinned mediation fixture test from 1e-12 to 1e-8. These curves are RNG-invariant analytic functions computed through matrix/QR operations and drift by up to ~2.1e-10 relative across BLAS/LAPACK implementations (measured OpenBLAS vs reference LAPACK); the fixture was pinned under reference LAPACK. RNG-reproduced quantities keep 1e-12. Fixes the r-universe binary-check failure.</li>

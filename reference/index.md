@@ -22,6 +22,8 @@
   : Credible interval from posterior samples
 - [`defineEstimand()`](https://x-biosignal.github.io/PhysioClinStats/reference/defineEstimand.md)
   : Define an ICH E9(R1) estimand
+- [`doseResponse()`](https://x-biosignal.github.io/PhysioClinStats/reference/doseResponse.md)
+  : Therapy dose-response model
 - [`estimatedMarginalMeans()`](https://x-biosignal.github.io/PhysioClinStats/reference/estimatedMarginalMeans.md)
   : Estimated marginal means
 - [`fitMMRM()`](https://x-biosignal.github.io/PhysioClinStats/reference/fitMMRM.md)

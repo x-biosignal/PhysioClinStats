@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">PhysioClinStats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@
 <span>    treat <span class="op">=</span> <span class="st">"treat"</span>, mediator <span class="op">=</span> <span class="st">"job_seek"</span>,</span>
 <span>    sims <span class="op">=</span> <span class="fl">1000</span>, seed <span class="op">=</span> <span class="fl">481</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="fu">PhysioCore</span><span class="fu">::</span><span class="fu"><a href="https://x-biosignal.r-universe.dev/PhysioCore/reference/AnalysisResult-accessors.html" class="external-link">resultValue</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">effects</span></span>
+<span>  <span class="fu">PhysioCore</span><span class="fu">::</span><span class="fu"><a href="https://x-biosignal.github.io/PhysioCore//reference/AnalysisResult-accessors.html" class="external-link">resultValue</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">effects</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>The estimates require sequential ignorability, consistency, positivity, no treatment-induced mediator-outcome confounder, and correctly specified models. An indirect effect is not proof of a biological mechanism.</p>
 </div>
@@ -122,7 +122,7 @@
 <span>  time_varying_covariates <span class="op">=</span> <span class="st">"current_score"</span>,</span>
 <span>  estimand <span class="op">=</span> <span class="st">"per_protocol"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">PhysioCore</span><span class="fu">::</span><span class="fu"><a href="https://x-biosignal.r-universe.dev/PhysioCore/reference/AnalysisResult-accessors.html" class="external-link">resultValue</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">effects</span></span></code></pre></div>
+<span><span class="fu">PhysioCore</span><span class="fu">::</span><span class="fu"><a href="https://x-biosignal.github.io/PhysioCore//reference/AnalysisResult-accessors.html" class="external-link">resultValue</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">effects</span></span></code></pre></div>
 <p>Time zero and every protocol component are declared rather than inferred. Inspect positivity, balance, censoring, and raw-versus-analysis weight diagnostics before interpreting a contrast. Cox hazard ratios are non-collapsible and are not marginal risk ratios.</p>
 </div>
 <div class="section level2">

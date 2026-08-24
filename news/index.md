@@ -1,5 +1,18 @@
 # Changelog
 
+## PhysioClinStats 0.3.0
+
+- [`doseResponse()`](https://x-biosignal.github.io/PhysioClinStats/reference/doseResponse.md):
+  therapy dose-response model relating a continuous/ordinal dose
+  (hours/repetitions/sessions) to an outcome or change-from-baseline,
+  with confounder adjustment, optional subject random intercepts (via
+  [`fitMixedModel()`](https://x-biosignal.github.io/PhysioClinStats/reference/fitMixedModel.md)),
+  and linear / log / natural-spline / Emax dose forms. Returns an
+  `AnalysisResult` with the dose effect, a predicted dose-response curve
+  and the coefficient table. Honest scope: every coefficient is
+  estimated from the data (no hard-coded slope), associational unless
+  dose was randomised.
+
 ## PhysioClinStats 0.2.1
 
 - Relaxed the two LAPACK-derived medsens sensitivity-curve comparisons
