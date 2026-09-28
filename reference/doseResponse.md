@@ -71,7 +71,7 @@ doseResponse(
 ## Value
 
 A
-[PhysioCore::AnalysisResult](https://x-biosignal.github.io/PhysioCore//reference/AnalysisResult.html)
+[PhysioCore::AnalysisResult](https://x-biosignal.r-universe.dev/PhysioExperiment/reference/AnalysisResult.html)
 of `type = "dose_response"`: `estimate` is the dose effect (slope,
 spline coefficients, or `E0`/`Emax`/`ED50`); `result` holds
 `coefficients`, the `curve` (`dose`, `predicted`), the `fit` and the
