@@ -1,0 +1,99 @@
+---
+title: "Single-case (N-of-1) inference with PhysioClinStats"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Single-case (N-of-1) inference with PhysioClinStats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+PhysioClinStats is the clinical inference engine of the ecosystem: mixed-effects
+and MMRM longitudinal models, single-case (N-of-1) designs, estimands with
+multiple imputation, and per-estimate uncertainty. The heavy modelling backends
+(`lme4`, `mmrm`, `emmeans`, `mice`, ...) are optional, guarded `Suggests`.
+
+This vignette uses only the **distribution-free single-case tools**, which need
+no modelling backend, so it runs anywhere. Each estimator reproduces its
+reference implementation (`SingleCaseES`, `scan`) exactly.
+
+```{r setup}
+library(PhysioClinStats)
+```
+
+## 1. A single case (AB design)
+
+We have one participant measured repeatedly: a baseline phase (A) and an
+intervention phase (B). Higher is better (e.g. comfortable gait speed, scaled).
+
+```{r data}
+A <- c(20, 20, 26, 25, 22)          # baseline
+B <- c(28, 25, 30, 29, 31, 30)      # intervention
+```
+
+## 2. Non-overlap effect sizes
+
+The non-overlap family summarises how cleanly the intervention points separate
+from baseline. `resultValue()` pulls the numbers out of the returned
+`AnalysisResult`.
+
+```{r nonoverlap}
+pnd <- scedPND(A, B)   # percentage of non-overlapping data
+pem <- scedPEM(A, B)   # percentage exceeding the median
+nap <- scedNAP(A, B)   # non-overlap of all pairs (= AUC), with a CI
+
+PhysioExperiment::resultValue(pnd)$estimate
+PhysioExperiment::resultValue(pem)$estimate
+PhysioExperiment::resultValue(nap)[c("estimate", "ci_lower", "ci_upper", "p_value")]
+```
+
+Tau rescales NAP to [-1, 1]; Tau-U additionally corrects for a baseline trend
+(and exposes both the `SingleCaseES` and `scan` denominator conventions).
+
+```{r tau}
+PhysioExperiment::resultValue(scedTau(A, B))$estimate
+PhysioExperiment::resultValue(scedTauU(A, B, method = "parker"))$estimate
+```
+
+## 3. Two-SD band
+
+A Shewhart-style band flags runs of intervention points beyond 2 SD of the
+baseline mean -- a transparent visual-analysis aid.
+
+```{r band}
+band <- scedTwoSDBand(A, B)
+res <- PhysioExperiment::resultValue(band)
+res[c("upper", "lower", "first_run_at")]
+```
+
+## 4. Frame the question as an estimand
+
+Even for a single case it helps to state the estimand explicitly (ICH E9(R1)):
+the treatment, population, endpoint, intercurrent-event strategy and summary
+measure.
+
+```{r estimand}
+defineEstimand(
+  treatment = "task-oriented training",
+  population = "one post-stroke participant",
+  endpoint = "comfortable gait speed",
+  intercurrent = list(event = "missed sessions",
+                      strategy = "treatment-policy"),
+  summary_measure = "non-overlap of all pairs"
+)
+```
+
+## Where to go next
+
+- Longitudinal group models -- `fitMixedModel()`, `fitMMRM()`,
+  `estimatedMarginalMeans()` -- require their modelling backends and guard for
+  them at run time.
+- Estimands with missing data -- `multipleImputation()`, `poolEstimates()`,
+  `analyseEstimand()`.
+- Causal tools -- `causalMediation()`, `targetTrialEmulate()`.
+- `conformalPredict()` gives distribution-free prediction intervals.
+
+See `?PhysioClinStats` and each function's help page for details.

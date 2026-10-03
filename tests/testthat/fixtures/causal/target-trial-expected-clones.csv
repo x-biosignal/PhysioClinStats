@@ -1,0 +1,16 @@
+clone_id,original_id,strategy,visit,observed_treatment,expected_treatment,adherent,artificial_censor,censor_reason,denominator_probability,numerator_probability,interval_weight,raw_weight
+1::never,1,never,0,0,0,TRUE,FALSE,,0.5,0.4,0.8,0.8
+1::never,1,never,1,0,0,TRUE,FALSE,,0.5,0.4,0.8,0.64
+1::never,1,never,2,1,0,FALSE,TRUE,artificial_deviation,,,,0.64
+1::always,1,always,0,0,1,FALSE,TRUE,artificial_deviation,,,,1
+2::never,2,never,0,1,0,FALSE,TRUE,artificial_deviation,,,,1
+2::always,2,always,0,1,1,TRUE,FALSE,,0.5,0.4,0.8,0.8
+2::always,2,always,1,1,1,TRUE,FALSE,,0.5,0.4,0.8,0.64
+2::always,2,always,2,1,1,TRUE,FALSE,outcome,0.5,0.4,0.8,0.512
+3::never,3,never,0,0,0,TRUE,FALSE,,0.5,0.4,0.8,0.8
+3::never,3,never,1,0,0,TRUE,FALSE,,0.5,0.4,0.8,0.64
+3::never,3,never,2,0,0,TRUE,FALSE,outcome,0.5,0.4,0.8,0.512
+3::always,3,always,0,0,1,FALSE,TRUE,artificial_deviation,,,,1
+4::never,4,never,0,1,0,FALSE,TRUE,artificial_deviation,,,,1
+4::always,4,always,0,1,1,TRUE,FALSE,,0.5,0.4,0.8,0.8
+4::always,4,always,1,0,1,FALSE,TRUE,artificial_deviation,,,,0.8

@@ -1,0 +1,9 @@
+original_id,clone_id,strategy,endpoint_time,endpoint_event,analysis_weight,censor_reason
+1,1::never,never,2,0,0.64,artificial_deviation
+1,1::always,always,0,0,1,artificial_deviation
+2,2::never,never,0,0,1,artificial_deviation
+2,2::always,always,2,1,0.512,outcome
+3,3::never,never,2,1,0.512,outcome
+3,3::always,always,0,0,1,artificial_deviation
+4,4::never,never,0,0,1,artificial_deviation
+4,4::always,always,1,0,0.8,artificial_deviation
