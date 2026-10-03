@@ -71,7 +71,7 @@ doseResponse(
 ## Value
 
 A
-[PhysioCore::AnalysisResult](https://x-biosignal.r-universe.dev/PhysioExperiment/reference/AnalysisResult.html)
+[PhysioExperiment::AnalysisResult](https://x-biosignal.r-universe.dev/PhysioExperiment/reference/AnalysisResult.html)
 of `type = "dose_response"`: `estimate` is the dose effect (slope,
 spline coefficients, or `E0`/`Emax`/`ED50`); `result` holds
 `coefficients`, the `curve` (`dose`, `predicted`), the `fit` and the
@@ -93,7 +93,7 @@ set.seed(1)
 d <- data.frame(dose = rep(c(0, 5, 10, 20), each = 15))
 d$change <- 0.4 * d$dose + rnorm(nrow(d), 0, 2)
 dr <- doseResponse(d, outcome = "change", dose = "dose", form = "linear")
-PhysioCore::resultValue(dr)$coefficients
+PhysioExperiment::resultValue(dr)$coefficients
 #>          term  estimate         se  statistic            p
 #> 1 (Intercept) 0.1382792 0.34475004  0.4010999 6.898205e-01
 #> 2        dose 0.4087947 0.03009225 13.5847166 1.137395e-19

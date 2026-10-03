@@ -21,7 +21,10 @@ install.packages("PhysioClinStats",
 
 ``` r
 
-if (requireNamespace("mediation", quietly = TRUE)) {
+library(PhysioClinStats)
+
+if (requireNamespace("mediation", quietly = TRUE) &&
+    requireNamespace("PhysioCore", quietly = TRUE)) {
   data(jobs, package = "mediation")
   model_m <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)
   model_y <- lm(
@@ -57,6 +60,27 @@ protocol <- targetTrialProtocol(
   analysis_plan = "clone-censor-weight"
 )
 
+# A small synthetic longitudinal cohort (no external data needed): one eventual
+# outcome per participant, observed over a shared weekly follow-up grid.
+set.seed(1)
+weeks <- 0:12
+make_participant <- function(i) {
+  baseline <- rnorm(1, 50, 10)
+  treated <- rbinom(1, 1, 0.5)
+  recovered <- rbinom(1, 1, plogis((baseline - 50) / 12 + 1.2 * treated))
+  data.frame(
+    participant = sprintf("p%03d", i),
+    week = weeks,
+    eligible = TRUE,
+    age = round(rnorm(1, 60, 8), 1),
+    baseline_score = round(baseline, 1),
+    current_score = round(baseline + cumsum(rnorm(length(weeks), 1.5 * treated, 2)), 1),
+    treated = treated,
+    recovered = recovered
+  )
+}
+longitudinal_data <- do.call(rbind, lapply(seq_len(150), make_participant))
+
 result <- targetTrialEmulate(
   longitudinal_data, protocol,
   id = "participant", time = "week", treatment = "treated",
@@ -65,7 +89,9 @@ result <- targetTrialEmulate(
   time_varying_covariates = "current_score",
   estimand = "per_protocol"
 )
-PhysioCore::resultValue(result)$effects
+if (requireNamespace("PhysioCore", quietly = TRUE)) {
+  PhysioCore::resultValue(result)$effects
+}
 ```
 
 Time zero and every protocol component are declared rather than
@@ -163,3 +189,9 @@ Community and policy documents live in the umbrella repository:
 - [`timeToMilestone()`](https://x-biosignal.github.io/PhysioClinStats/reference/timeToMilestone.md)
   : Derive a time-to-milestone survival endpoint
 
+# Articles
+
+### All vignettes
+
+- [Single-case (N-of-1) inference with
+  PhysioClinStats](https://x-biosignal.github.io/PhysioClinStats/articles/PhysioClinStats.md):

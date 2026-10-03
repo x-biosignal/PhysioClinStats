@@ -81,6 +81,6 @@ train <- data.frame(x = rnorm(60)); train$y <- 2 * train$x + rnorm(60)
 calib <- data.frame(x = rnorm(60)); calib$y <- 2 * calib$x + rnorm(60)
 fit <- lm(y ~ x, data = train)
 res <- conformalInterval(fit, calib, data.frame(x = c(-1, 0, 1)))
-PhysioCore::resultValue(res)$lower
+PhysioExperiment::resultValue(res)$lower
 #> [1] -3.6257266 -1.6733436  0.2790395
 ```
